@@ -60,14 +60,19 @@ stage('SonarQube Analysis') {
 }
 
        
+
 stage('OWASP Dependency Check') {
     steps {
         sh 'mkdir -p dependency-check-report'
 
-        dependencyCheck(
-            additionalArguments: '--scan 2128_tween_agency --format HTML --format XML --out dependency-check-report',
-            odcInstallation: 'DependencyCheck'
-        )
+        withCredentials([
+            string(credentialsId: 'nvd-api-key', variable: 'NVD_API_KEY')
+        ]) {
+            dependencyCheck(
+                additionalArguments: "--scan 2128_tween_agency --format HTML --format XML --out dependency-check-report --nvdApiKey ${NVD_API_KEY}",
+                odcInstallation: 'DependencyCheck'
+            )
+        }
     }
     post {
         always {
