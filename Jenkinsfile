@@ -33,6 +33,7 @@ pipeline {
         }
 
      
+
 stage('SonarQube Analysis') {
     steps {
         dir("${APP_DIR}") {
@@ -41,17 +42,14 @@ stage('SonarQube Analysis') {
 
                 withSonarQubeEnv('SonarQube') {
                     sh """
-                       "${scannerHome}/bin/sonar-scanner"
-                        -Dsonar.projectKey=\${SONAR_PROJECT} \
-                        -Dsonar.projectName="Digital Marketing" \
-                        -Dsonar.sources=. \
-                        -Dsonar.sourceEncoding=UTF-8
+                        "${scannerHome}/bin/sonar-scanner" -Dsonar.projectKey="${SONAR_PROJECT}" -Dsonar.projectName="Digital Marketing" -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8
                     """
                 }
             }
         }
     }
 }
+
 
         stage('SonarQube Quality Gate') {
     steps {
