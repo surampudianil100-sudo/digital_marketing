@@ -41,7 +41,7 @@ stage('SonarQube Analysis') {
 
                 withSonarQubeEnv('SonarQube') {
                     sh """
-                        "\${scannerHome}/bin/sonar-scanner" \
+                       "${scannerHome}/bin/sonar-scanner"
                         -Dsonar.projectKey=\${SONAR_PROJECT} \
                         -Dsonar.projectName="Digital Marketing" \
                         -Dsonar.sources=. \
