@@ -32,7 +32,8 @@ pipeline {
             }
         }
 
-     stage('SonarQube Analysis') {
+     
+stage('SonarQube Analysis') {
     steps {
         dir("${APP_DIR}") {
             script {
@@ -41,16 +42,17 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh """
                         "\${scannerHome}/bin/sonar-scanner" \
-                          -Dsonar.projectKey=\${SONAR_PROJECT} \
-                          -Dsonar.projectName="Digital Marketing" \
-                          -Dsonar.sources=. \
-                          -Dsonar.sourceEncoding=UTF-8
+                        -Dsonar.projectKey=\${SONAR_PROJECT} \
+                        -Dsonar.projectName="Digital Marketing" \
+                        -Dsonar.sources=. \
+                        -Dsonar.sourceEncoding=UTF-8
                     """
                 }
             }
         }
     }
 }
+
         stage('SonarQube Quality Gate') {
     steps {
         timeout(time: 10, unit: 'MINUTES') {
