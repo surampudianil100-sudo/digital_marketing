@@ -134,7 +134,7 @@ pipeline {
                       --kubeconfig ${KUBECONFIG}
 
                     kubectl --kubeconfig=${KUBECONFIG} \
-                      apply -f /root/devsecops-eks-project/k8s/
+                      apply -f k8s/
 
                     kubectl --kubeconfig=${KUBECONFIG} \
                       set image deployment/digital-marketing \
