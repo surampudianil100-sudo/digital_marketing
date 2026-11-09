@@ -35,29 +35,32 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                dir("${APP_DIR}") {
-                    withSonarQubeEnv('SonarQube') {
-                        sh '''
-                            sonar-scanner \
-                              -Dsonar.projectKey=${SONAR_PROJECT} \
-                              -Dsonar.projectName="Digital Marketing" \
-                              -Dsonar.sources=. \
-                              -Dsonar.sourceEncoding=UTF-8
-                        '''
-                    }
-                }
-            }
-        }
+       stage('SonarQube Analysis') {
+    steps {
+        dir("${APP_DIR}") {
+            script {
+                def scannerHome = tool 'SonarScanner'
 
-        stage('SonarQube Quality Gate') {
-            steps {
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                withSonarQubeEnv('SonarQube') {
+                    sh """
+                        "\${scannerHome}/bin/sonar-scanner" \
+                          -Dsonar.projectKey=\${SONAR_PROJECT} \
+                          -Dsonar.projectName="Digital Marketing" \
+                          -Dsonar.sources=. \
+                          -Dsonar.sourceEncoding=UTF-8
+                    """
                 }
             }
         }
+    }
+}
+        stage('SonarQube Quality Gate') {
+    steps {
+        timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
+    }
+}
 
         stage('OWASP Dependency Check') {
             steps {
