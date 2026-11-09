@@ -17,9 +17,6 @@ pipeline {
         DOCKER_IMAGE     = 'digital-marketing'
     }
 
-    tools {
-        sonarQube 'SonarScanner'
-    }
 
     stages {
         stage('Checkout') {
