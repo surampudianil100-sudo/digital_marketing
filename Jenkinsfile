@@ -59,26 +59,29 @@ stage('SonarQube Analysis') {
     }
 }
 
-        stage('OWASP Dependency Check') {
-            steps {
-                dependencyCheck(
-                    additionalArguments: '--scan 2128_tween_agency --format HTML --format XML --out dependency-check-report',
-                    odcInstallation: 'DependencyCheck'
-                )
-            }
-            post {
-                always {
-                    dependencyCheckPublisher(
-                        pattern: 'dependency-check-report/dependency-check-report.xml',
-                        failedTotalCritical: 1
-                    )
-                    archiveArtifacts(
-                        artifacts: 'dependency-check-report/**',
-                        allowEmptyArchive: true
-                    )
-                }
-            }
+       
+stage('OWASP Dependency Check') {
+    steps {
+        sh 'mkdir -p dependency-check-report'
+
+        dependencyCheck(
+            additionalArguments: '--scan 2128_tween_agency --format HTML --format XML --out dependency-check-report',
+            odcInstallation: 'DependencyCheck'
+        )
+    }
+    post {
+        always {
+            dependencyCheckPublisher(
+                pattern: 'dependency-check-report/dependency-check-report.xml',
+                failedTotalCritical: 1
+            )
+            archiveArtifacts(
+                artifacts: 'dependency-check-report/**',
+                allowEmptyArchive: true
+            )
         }
+    }
+}
 
         stage('Docker Build') {
             steps {
