@@ -35,7 +35,7 @@ pipeline {
             }
         }
 
-       stage('SonarQube Analysis') {
+     stage('SonarQube Analysis') {
     steps {
         dir("${APP_DIR}") {
             script {
